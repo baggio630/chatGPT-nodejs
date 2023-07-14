@@ -48,7 +48,9 @@ router.get("/image", async (ctx, next) => {
 
 
 // 启用路由
-app.use(router.routes()).use(router.allowedMethods());
+app.use(cors({
+  origin: '*'
+}));
 
 // 启动服务器
 app.listen(process.env.PORT, () => {
