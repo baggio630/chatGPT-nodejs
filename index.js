@@ -1,6 +1,7 @@
 import { Configuration, OpenAIApi } from "openai";
-import Koa from "koa"
+import Koa from "koa";
 import Router from "koa-router";
+import cors from '@koa/cors';
 
 // https://platform.openai.com/docs/api-reference/images
 
@@ -51,6 +52,8 @@ router.get("/image", async (ctx, next) => {
 app.use(cors({
   origin: '*'
 }));
+
+app.use(router.routes()).use(router.allowedMethods());
 
 // 启动服务器
 app.listen(process.env.PORT, () => {
