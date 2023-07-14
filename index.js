@@ -47,12 +47,11 @@ router.get("/image", async (ctx, next) => {
     ctx.body = "<img src=\"" + url + "\"></>"
 });
 
-
-// 启用路由
 app.use(cors({
   origin: '*'
 }));
 
+// 启用路由
 app.use(router.routes()).use(router.allowedMethods());
 
 // 启动服务器
