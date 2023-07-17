@@ -42,7 +42,7 @@ router.get("/chat", async (ctx, next) => {
 
         const res = await openai.createChatCompletion({
             // 对话模型
-            model: "gpt-3.5-turbo-16k-0613",
+            model: "gpt-3.5-turbo",
             messages: [
                 {
                     role: "system",
