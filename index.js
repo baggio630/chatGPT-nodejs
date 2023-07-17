@@ -55,13 +55,20 @@ router.get("/chat", async (ctx, next) => {
             ]
         })
         // 将生成的内容返回给客户端
-        ctx.body = res.data.choices
+        if (!res || !res.data || !res.data.choices) {
+            console.error('Unexpected response from OpenAI API', res);
+            ctx.status = 500;
+            ctx.body = 'Unexpected response from OpenAI API';
+            return;
+        }
+        ctx.body = res.data.choices;
     } catch (error) {
         console.error(`Error when trying to use OpenAI API: ${error.message}`);
         ctx.status = 500;
         ctx.body = 'Internal Server Error';
     }
 });
+
 
 
 router.get("/image", async (ctx, next) => {
