@@ -40,21 +40,29 @@ router.get("/chat", async (ctx, next) => {
         // 获取请求中的参数
         const { prompt } = ctx.request.query;
 
-        const res = await openai.createCompletion({
+        const res = await openai.createChatCompletion({
             // 对话模型
-            model: "gpt-3.5-turbo-16k-0613",//  dialogue-babi-001 对话模型
-            prompt: prompt,
-            max_tokens: 2048,
-            temperature: 0.2
-        });
+            model: "gpt-3.5-turbo-16k-0613",
+            messages: [
+                {
+                    role: "system",
+                    content: "You are a helpful assistant."
+                },
+                {
+                    role: "user",
+                    content: prompt
+                }
+            ]
+        })
         // 将生成的内容返回给客户端
-        ctx.body = res.data.choices;
+        ctx.body = res.data.choices
     } catch (error) {
         console.error(`Error when trying to use OpenAI API: ${error.message}`);
         ctx.status = 500;
         ctx.body = 'Internal Server Error';
     }
 });
+
 
 router.get("/image", async (ctx, next) => {
     // 获取请求中的参数
