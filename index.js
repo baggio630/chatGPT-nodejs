@@ -29,9 +29,8 @@ router.get("/chat", async (ctx, next) => {
     //model: "gpt-3.5-turbo-16k-0613",
     // prompt: prompt,
     // max_tokens: 2048,
-    // temperature: 0.2
+    temperature: 0.2
   });
-  // 将生成的内容返回给客户端
   ctx.body = res.data.choices;
 });
 
