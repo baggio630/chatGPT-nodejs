@@ -63,7 +63,8 @@ router.get("/chat", async (ctx, next) => {
         }
         ctx.body = res.data.choices;
     } catch (error) {
-        console.error(`Error when trying to use OpenAI API: ${error.message}`);
+        // console.error(`Error when trying to use OpenAI API: ${error.message}`);
+        console.error(`Error when trying to use OpenAI API2: ${error.response.data.error.message}`);
         ctx.status = 500;
         ctx.body = 'Internal Server Error';
     }
