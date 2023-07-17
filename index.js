@@ -16,6 +16,7 @@ const app = new Koa()
 const router = new Router();
 
 
+
 router.get("/chat", async (ctx, next) => {
     // 获取请求中的参数
     const { prompt } = ctx.request.query;
