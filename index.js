@@ -40,10 +40,10 @@ router.get("/chat", async (ctx, next) => {
         // 获取请求中的参数
         const { prompt } = ctx.request.query;
 
-        const res = await openai.createCompletion({
+        const res = await openai.ChatCompletion.create({
             // 对话模型
             model: "gpt-3.5-turbo",
-            prompt: [
+            messages: [
                 {
                     role: "system",
                     content: "You are a helpful assistant."
