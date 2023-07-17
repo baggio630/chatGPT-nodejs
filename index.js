@@ -57,6 +57,11 @@ app.use(cors({
 // 启用路由
 app.use(router.routes()).use(router.allowedMethods());
 
+router.get("/engines", async (ctx, next) => {
+    const response = await openai.listEngines();
+    ctx.body = response.data;  // 返回模型列表到客户端
+});
+
 // 启动服务器
 app.listen(process.env.PORT, () => {
     console.log("Server is listening on port " + process.env.PORT);
