@@ -25,7 +25,8 @@ router.get("/chat", async (ctx, next) => {
 
     const res = await openai.createCompletion({
         // 对话模型
-        model: "gpt-3.5-turbo-16k-0613",//  dialogue-babi-001 对话模型
+        model: "text-davinci-003",
+        //model: "gpt-3.5-turbo-16k-0613",
         prompt: prompt,
         max_tokens: 2048,
         temperature: 0.2
