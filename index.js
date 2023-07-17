@@ -25,9 +25,7 @@ router.get("/chat", async (ctx, next) => {
     // 对话模型
     model: "gpt-3.5-turbo-16k-0613",
     // messages: [{ role: "user", content: prompt }],
-    messages: [{role: "system", content: "作为一个设计助理，帮我提问者解决设计类问题."}, {role: "user", content: prompt }],
-    //model: "gpt-3.5-turbo-16k-0613",
-    // prompt: prompt,
+    messages: [{role: "system", content: "作为一个设计助理，请根据我提供给你的原始数据，帮助提问者解决设计类问题."}, {role: "user", content: prompt }],
     // max_tokens: 2048,
     temperature: 0.2
   });
