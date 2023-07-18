@@ -21,15 +21,14 @@ router.get("/chat", async (ctx, next) => {
   // 获取请求中的参数
   const { prompt, systemMessage } = ctx.request.query;
 
+  const messages = [{role: "user", content: prompt}];
+  if (systemMessage) {
+    messages.unshift({role: "system", content: systemMessage});
+  }
+
   const res = await openai.createChatCompletion({
-    // 对话模型
     model: "gpt-3.5-turbo-16k-0613",
-    // messages: [{ role: "user", content: prompt }],
-    messages: [
-      {role: "system", content: systemMessage || "作为一个设计助理，请根据我提供给你的原始数据，帮助提问者解决设计类问题."}, 
-      {role: "user", content: prompt }
-    ],
-    // max_tokens: 2048,
+    messages: messages,
     temperature: 0.2
   });
   ctx.body = res.data.choices;
