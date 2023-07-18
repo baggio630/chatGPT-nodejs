@@ -21,6 +21,9 @@ router.get("/chat", async (ctx, next) => {
   // 获取请求中的参数
   const { prompt, systemMessage } = ctx.request.query;
 
+  console.log('prompt:', prompt);
+  console.log('systemMessage:', systemMessage);
+
   const messages = [{role: "user", content: prompt}];
   if (systemMessage) {
     messages.unshift({role: "system", content: systemMessage});
