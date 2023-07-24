@@ -12,7 +12,7 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 const response = await openai.listEngines();
 
-console.log(response);
+console.log("prompt", response);
 
 const app = new Koa();
 const router = new Router();
@@ -21,7 +21,7 @@ router.get("/chat", async (ctx, next) => {
   // 获取请求中的参数
   const { prompt, systemMessage } = ctx.request.query;
 
-  console.log('prompt:', prompt);
+  console.log('user:', prompt);
   console.log('systemMessage:', systemMessage);
 
   const messages = [{role: "user", content: prompt}];
