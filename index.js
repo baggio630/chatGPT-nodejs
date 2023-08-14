@@ -29,6 +29,8 @@ router.get("/chat", async (ctx, next) => {
     messages.unshift({role: "system", content: systemMessage});
   }
 
+  console.log("提交的数据",messages);
+
   const res = await openai.createChatCompletion({
     model: "gpt-3.5-turbo-16k-0613",
     messages: messages,
@@ -36,6 +38,8 @@ router.get("/chat", async (ctx, next) => {
   });
   ctx.body = res.data.choices;
 });
+
+console.log("结果",res);
 
 app.use(
   cors({
