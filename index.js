@@ -39,7 +39,7 @@ router.get("/chat", async (ctx, next) => {
   ctx.body = res.data.choices;
 });
 
-console.log("结果",res);
+// console.log("结果",res);
 
 app.use(
   cors({
