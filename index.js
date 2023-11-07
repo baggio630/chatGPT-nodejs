@@ -13,9 +13,9 @@ import cors from "@koa/cors";
 
 const openai = new OpenAI({organization: process.env.APP_ORG, apiKey: process.env.APP_KEY, });
 
-const response = await openai.listEngines();
+// const response = await openai.listEngines();
 
-console.log("prompt", response);
+// console.log("prompt", response);
 
 const app = new Koa();
 const router = new Router();
