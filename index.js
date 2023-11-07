@@ -1,14 +1,14 @@
-import { Configuration, OpenAIApi } from "openai";
-import Koa from "koa";
-import Router from "koa-router";
-import cors from "@koa/cors";
-// import bodyParser from "koa-bodyparser";
+const OpenAI = require('openai');
+const Koa = require('koa');
+const Router = require('koa-router');
+const cors = require('@koa/cors');
+// const bodyParser = require('koa-bodyparser'); // 如果需要解析 POST 请求体
 
-const configuration = new Configuration({
+const configuration = new OpenAI.Configuration({
   organization: process.env.APP_ORG,
   apiKey: process.env.APP_KEY,
 });
-const openai = new OpenAIApi(configuration);
+const openai = new OpenAI.OpenAIApi(configuration);
 const response = await openai.listEngines();
 
 console.log("prompt", response);
