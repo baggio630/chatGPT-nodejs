@@ -2,6 +2,7 @@ import { Configuration, OpenAIApi } from "openai";
 import Koa from "koa";
 import Router from "koa-router";
 import cors from "@koa/cors";
+// import bodyParser from "koa-bodyparser";
 
 const configuration = new Configuration({
   organization: process.env.APP_ORG,
@@ -35,6 +36,26 @@ router.get("/chat", async (ctx, next) => {
     temperature: 0.2
   });
   ctx.body = res.data.choices;
+});
+
+router.post("/assistant", async (ctx) => {
+  // const { prompt } = ctx.request.body;
+  const prompt = "你能做什么？";
+
+  // 创建一个新的线程
+  const thread = await openai.beta.threads.create();
+
+  // 在线程中创建并执行一个运行
+  const run = await openai.beta.threads.runs.create(
+    {
+    thread_id: thread.id,
+    assistant_id: "asst_oaoORJy5U49dZrdwQvkYVbIb",
+    inputs: prompt
+    }
+  );
+
+  // 将回复消息作为响应返回
+  ctx.body = run.data;
 });
 
 // console.log("结果",res);
