@@ -42,17 +42,31 @@ router.post("/assistant", async (ctx) => {
   // 创建一个新的线程
   const thread = await openai.beta.threads.create();
 
-  // 在线程中创建并执行一个运行
-  const run = await openai.beta.threads.runs.create(
+  const message = await openai.beta.threads.messages.create(
+    thread.id,
     {
-      thread_id: thread.id,
-      assistant_id: "asst_oaoORJy5U49dZrdwQvkYVbIb",
-      inputs: prompt
+      role: "user",
+      content: prompt
     }
   );
 
+  // 在线程中创建并执行一个运行
+  const run = await openai.beta.threads.runs.create(
+    thread.id,
+    {
+      assistant_id: "asst_oaoORJy5U49dZrdwQvkYVbIb",
+    }
+  );
+
+  const run1 = await openai.beta.threads.runs.retrieve(
+    thread.id,
+    run.id
+  );
+
+  console.log("run1",run1)
+
   // 将回复消息作为响应返回
-  ctx.body = run.data;
+  ctx.body = run1;
 });
 
 app.use(
