@@ -40,25 +40,14 @@ router.post("/assistant", async (ctx) => {
   const prompt = "你能做什么？";
 
   // 创建一个新的线程
-  const thread = await openai.beta.threads.create();
-
-  const message = await openai.beta.threads.messages.create(
-    thread.id,
-    {
-      role: "user",
-      content: prompt
-    }
-  );
-
-  async function main() {
-    const threadMessages = await openai.beta.threads.messages.list(
-      thread.id
-    );
-  
-    console.log(threadMessages.data);
-  }
-
-  main();
+  const thread = await openai.beta.threads.create({
+    messages: [
+      {
+        "role": "user",
+        "content": prompt,
+      }
+    ]
+  });
 
   // 在线程中创建并执行一个运行
   const run = await openai.beta.threads.runs.create(
