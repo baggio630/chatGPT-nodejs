@@ -1,14 +1,21 @@
-import { Configuration, OpenAIApi } from "openai";
-import Koa from "koa"
+// import { Configuration, OpenAIApi } from "openai";
+import OpenAI from "openai";
+import Koa from "koa";
 import Router from "koa-router";
 
 // https://platform.openai.com/docs/api-reference/images
 
-const configuration = new Configuration({
+// const configuration = new Configuration({
+//     organization: process.env.APP_ORG,
+//     apiKey: process.env.APP_KEY,
+// });
+// const openai = new OpenAIApi(configuration);
+const openai = new OpenAI(
+  {
     organization: process.env.APP_ORG,
     apiKey: process.env.APP_KEY,
-});
-const openai = new OpenAIApi(configuration);
+  }
+);
 const response = await openai.listEngines();
 
 const app = new Koa()
