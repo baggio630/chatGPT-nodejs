@@ -1,4 +1,3 @@
-// import { Configuration, OpenAIApi } from "openai";
 import OpenAI from "openai";
 import Koa from "koa";
 import Router from "koa-router";
@@ -36,6 +35,7 @@ router.get("/chat", async (ctx, next) => {
 });
 
 router.post("/assistant", async (ctx) => {
+  console.log("Received POST request");
   const { prompt } = ctx.request.body;
   console.log("prompt",prompt)
   // const prompt = "你能做什么？";
