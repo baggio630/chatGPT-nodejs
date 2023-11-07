@@ -3,7 +3,7 @@ import Koa from "koa";
 import Router from "koa-router";
 import cors from "@koa/cors";
 
-z
+// https://platform.openai.com/docs/api-reference/images
 
 const configuration = new Configuration({
   organization: process.env.APP_ORG,
