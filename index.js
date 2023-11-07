@@ -2,7 +2,7 @@ import OpenAI from "openai";
 import Koa from "koa";
 import Router from "koa-router";
 import cors from "@koa/cors";
-
+import bodyParser from 'koa-bodyparser';
 const openai = new OpenAI(
   {
     organization: process.env.APP_ORG,
@@ -12,6 +12,8 @@ const openai = new OpenAI(
 
 const app = new Koa();
 const router = new Router();
+
+app.use(bodyParser());
 
 router.get("/chat", async (ctx, next) => {
   // 获取请求中的参数
