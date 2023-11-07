@@ -17,9 +17,9 @@ const openai = new OpenAI(
     apiKey: process.env.APP_KEY,
   }
 );
-const response = await openai.listEngines();
+// const response = await openai.listEngines();
 
-console.log("prompt", response);
+// console.log("prompt", response);
 
 const app = new Koa();
 const router = new Router();
@@ -53,10 +53,10 @@ app.use(
 // 启用路由
 app.use(router.routes()).use(router.allowedMethods());
 
-router.get("/engines", async (ctx, next) => {
-  const response = await openai.listEngines();
-  ctx.body = response.data; // 返回模型列表到客户端
-});
+// router.get("/engines", async (ctx, next) => {
+//   const response = await openai.listEngines();
+//   ctx.body = response.data; // 返回模型列表到客户端
+// });
 
 // 启动服务器
 app.listen(process.env.PORT, () => {
