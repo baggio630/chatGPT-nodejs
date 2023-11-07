@@ -20,7 +20,7 @@ const openai = new OpenAIApi(configuration);
 
 const response = await openai.listEngines();
 
-// console.log("prompt", response);
+console.log("prompt", response);
 
 const app = new Koa();
 const router = new Router();
