@@ -9,9 +9,8 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "@koa/cors": "^4.0.0",
     "koa": "^2.14.1",
     "koa-router": "^12.0.0",
-    "openai": "^4.16.1"
+    "openai": "^3.1.0"
   }
 }
