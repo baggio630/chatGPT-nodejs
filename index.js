@@ -1,14 +1,18 @@
-import { Configuration, OpenAIApi } from "openai";
+// import { Configuration, OpenAIApi } from "openai";
+import OpenAI from "openai";
 import Koa from "koa";
 import Router from "koa-router";
 import cors from "@koa/cors";
 // import bodyParser from "koa-bodyparser";
 
-const configuration = new Configuration({
-  organization: process.env.APP_ORG,
-  apiKey: process.env.APP_KEY,
-});
-const openai = new OpenAIApi(configuration);
+// const configuration = new Configuration({
+//   organization: process.env.APP_ORG,
+//   apiKey: process.env.APP_KEY,
+// });
+// const openai = new OpenAIApi(configuration);
+
+const openai = new OpenAI({organization: process.env.APP_ORG, apiKey: process.env.APP_KEY, });
+
 const response = await openai.listEngines();
 
 console.log("prompt", response);
