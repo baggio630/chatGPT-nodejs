@@ -42,7 +42,7 @@ router.get("/chat", async (ctx, next) => {
     temperature: 0.2
   });
   console.log("res",res)
-  ctx.body = res.data.choices;
+  ctx.body = res.choices;
 });
 
 app.use(
