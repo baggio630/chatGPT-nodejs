@@ -37,6 +37,7 @@ router.get("/chat", async (ctx, next) => {
 
 router.post("/assistant", async (ctx) => {
   const { prompt } = ctx.request.body;
+  console.log("prompt",prompt)
   // const prompt = "你能做什么？";
 
   // 创建一个新的线程
