@@ -1,24 +1,24 @@
-// import { Configuration, OpenAIApi } from "openai";
+import { Configuration, OpenAIApi } from "openai";
 import OpenAI from "openai";
 import Koa from "koa";
 import Router from "koa-router";
 import cors from "@koa/cors";
 // import bodyParser from "koa-bodyparser";
 
-// const configuration = new Configuration({
-//   organization: process.env.APP_ORG,
-//   apiKey: process.env.APP_KEY,
-// });
-// const openai = new OpenAIApi(configuration);
+const configuration = new Configuration({
+  organization: process.env.APP_ORG,
+  apiKey: process.env.APP_KEY,
+});
+const openai = new OpenAIApi(configuration);
 
-const openai = new OpenAI(
-  {
-    organization: process.env.APP_ORG,
-    apiKey: process.env.APP_KEY,
-  }
-);
+// const openai = new OpenAI(
+//   {
+//     organization: process.env.APP_ORG,
+//     apiKey: process.env.APP_KEY,
+//   }
+// );
 
-// const response = await openai.listEngines();
+const response = await openai.listEngines();
 
 // console.log("prompt", response);
 
@@ -78,10 +78,10 @@ app.use(
 // 启用路由
 app.use(router.routes()).use(router.allowedMethods());
 
-// router.get("/engines", async (ctx, next) => {
-//   const response = await openai.listEngines();
-//   ctx.body = response.data; // 返回模型列表到客户端
-// });
+router.get("/engines", async (ctx, next) => {
+  const response = await openai.listEngines();
+  ctx.body = response.data; // 返回模型列表到客户端
+});
 
 // 启动服务器
 app.listen(process.env.PORT, () => {
