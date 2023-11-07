@@ -38,7 +38,10 @@ router.get("/chat", async (ctx, next) => {
 
   const res = await openai.chat.completions.create({
     model: "gpt-3.5-turbo-16k-0613",
-    messages: messages,
+    messages: [
+    {"role": "system", "content": "你是一名设计助理，帮助人们解答设计问题."},
+    messages
+  ],
     temperature: 0.2
   });
   ctx.body = res.data.choices;
