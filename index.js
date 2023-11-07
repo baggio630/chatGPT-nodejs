@@ -41,6 +41,7 @@ router.get("/chat", async (ctx, next) => {
     messages: [{ role: 'user', content: prompt }],
     temperature: 0.2
   });
+  console.log("res",res)
   ctx.body = res.data.choices;
 });
 
