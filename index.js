@@ -36,7 +36,7 @@ router.get("/chat", async (ctx, next) => {
     messages.unshift({role: "system", content: systemMessage});
   }
 
-  const res = await openai.createChatCompletion({
+  const res = await openai.chat.completions.create({
     model: "gpt-3.5-turbo-16k-0613",
     messages: messages,
     temperature: 0.2
