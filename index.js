@@ -1,56 +1,90 @@
+// import OpenAI from "openai";
+// require('dotenv').config();
 import { Configuration, OpenAIApi } from "openai";
-import Koa from "koa"
+import Koa from "koa";
 import Router from "koa-router";
-
-// https://platform.openai.com/docs/api-reference/images
+import cors from "@koa/cors";
+// import bodyParser from "koa-bodyparser";
 
 const configuration = new Configuration({
-    organization: process.env.APP_ORG,
-    apiKey: process.env.APP_KEY,
+  organization: process.env.APP_ORG,
+  apiKey: process.env.APP_KEY,
 });
 const openai = new OpenAIApi(configuration);
+
+// const openai = new OpenAI(
+//   {
+//     organization: process.env.APP_ORG,
+//     apiKey: process.env.APP_KEY,
+//   }
+// );
+
 const response = await openai.listEngines();
 
-const app = new Koa()
+console.log("prompt", response);
+
+const app = new Koa();
 const router = new Router();
 
-
 router.get("/chat", async (ctx, next) => {
-    // 获取请求中的参数
-    const { prompt } = ctx.request.query;
+  // 获取请求中的参数
+  const { prompt, systemMessage } = ctx.request.query;
 
-    const res = await openai.createCompletion({
-        // 对话模型
-        model: "text-davinci-003",//  dialogue-babi-001 对话模型
-        prompt: prompt,
-        max_tokens: 2048,
-        temperature: 0.2
-    })
-    // 将生成的内容返回给客户端
-    ctx.body = res.data.choices
+  console.log('user:', prompt);
+  console.log('systemMessage:', systemMessage);
+
+  const messages = [{ role: "user", content: prompt }];
+  if (systemMessage) {
+    messages.unshift({ role: "system", content: systemMessage });
+  }
+
+  console.log("提交的数据", messages);
+
+  const res = await openai.createChatCompletion({
+    model: "gpt-3.5-turbo-16k-0613",
+    messages: messages,
+    temperature: 0.2
+  });
+  ctx.body = res.data.choices;
 });
 
-router.get("/image", async (ctx, next) => {
-    // 获取请求中的参数
-    const { prompt } = ctx.request.query;
-    const res = await openai.createImage({
-        // 对话模型
-        model: "image-alpha-001",
-        prompt: prompt,
-        size: "256x256",
-        n: 1
-    })
-    // 将生成的内容返回给客户端
-    var url = res.data.data[0].url
+router.post("/assistant", async (ctx) => {
+  // const { prompt } = ctx.request.body;
+  const prompt = "你能做什么？";
 
-    ctx.body = "<img src=\"" + url + "\"></>"
+  // 创建一个新的线程
+  const thread = await openai.beta.threads.create();
+
+  // 在线程中创建并执行一个运行
+  const run = await openai.beta.threads.runs.create(
+    {
+      thread_id: thread.id,
+      assistant_id: "asst_oaoORJy5U49dZrdwQvkYVbIb",
+      inputs: prompt
+    }
+  );
+
+  // 将回复消息作为响应返回
+  ctx.body = run.data;
 });
 
+// console.log("结果",res);
+
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
 // 启用路由
 app.use(router.routes()).use(router.allowedMethods());
 
+router.get("/engines", async (ctx, next) => {
+  const response = await openai.listEngines();
+  ctx.body = response.data; // 返回模型列表到客户端
+});
+
 // 启动服务器
 app.listen(process.env.PORT, () => {
-    console.log("Server is listening on port " + process.env.PORT);
+  console.log("Server is listening on port " + process.env.PORT);
 });
