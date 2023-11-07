@@ -1,5 +1,5 @@
+// import OpenAI from "openai";
 import { Configuration, OpenAIApi } from "openai";
-import OpenAI from "openai";
 import Koa from "koa";
 import Router from "koa-router";
 import cors from "@koa/cors";
