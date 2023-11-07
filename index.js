@@ -45,6 +45,8 @@ router.post("/assistant", async (ctx) => {
     messages: prompt
   });
 
+  console.log("thread",thread)
+
   // 在线程中创建并执行一个运行
   const run = await openai.beta.threads.runs.create(
     thread.id,
@@ -52,6 +54,8 @@ router.post("/assistant", async (ctx) => {
       assistant_id: "asst_oaoORJy5U49dZrdwQvkYVbIb",
     }
   );
+
+  console.log("run",run)
 
   const run1 = await openai.beta.threads.runs.retrieve(
     thread.id,
