@@ -36,17 +36,12 @@ router.get("/chat", async (ctx, next) => {
 });
 
 router.post("/assistant", async (ctx) => {
-  // const { prompt } = ctx.request.body;
-  const prompt = "你能做什么？";
+  const { prompt } = ctx.request.body;
+  // const prompt = "你能做什么？";
 
   // 创建一个新的线程
   const thread = await openai.beta.threads.create({
-    messages: [
-      {
-        "role": "user",
-        "content": prompt,
-      }
-    ]
+    messages: prompt
   });
 
   // 在线程中创建并执行一个运行
