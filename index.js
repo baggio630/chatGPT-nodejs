@@ -50,6 +50,16 @@ router.post("/assistant", async (ctx) => {
     }
   );
 
+  async function main() {
+    const threadMessages = await openai.beta.threads.messages.list(
+      thread.id
+    );
+  
+    console.log(threadMessages.data);
+  }
+
+  main();
+
   // 在线程中创建并执行一个运行
   const run = await openai.beta.threads.runs.create(
     thread.id,
