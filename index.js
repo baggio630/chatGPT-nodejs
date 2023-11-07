@@ -31,14 +31,14 @@ router.get("/chat", async (ctx, next) => {
   console.log('user:', prompt);
   console.log('systemMessage:', systemMessage);
 
-  const messages = [{role: "user", content: prompt}];
+  // const messages = [{role: "user", content: prompt}];
   if (systemMessage) {
     messages.unshift({role: "system", content: systemMessage});
   }
 
   const res = await openai.chat.completions.create({
     model: "gpt-3.5-turbo-16k-0613",
-    messages: [{ role: 'user', content: 'Say this is a test' }],
+    messages: [{ role: 'user', content: prompt }],
     temperature: 0.2
   });
   ctx.body = res.data.choices;
