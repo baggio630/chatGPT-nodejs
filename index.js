@@ -24,7 +24,7 @@ router.get("/chat", async (ctx, next) => {
 
   // const messages = [{role: "user", content: prompt}];
   if (systemMessage) {
-    messages.unshift({role: "system", content: systemMessage});
+    messages.unshift({ role: "system", content: systemMessage });
   }
 
   const res = await openai.chat.completions.create({
@@ -32,41 +32,51 @@ router.get("/chat", async (ctx, next) => {
     messages: [{ role: 'user', content: prompt }],
     temperature: 0.2
   });
-  console.log("res",res)
+  console.log("res", res)
   ctx.body = res.choices;
 });
 
 router.get("/assistant", async (ctx) => {
-  console.log("Received POST request");
-  const { content } = ctx.request.query;
-  console.log("content", content);
+  try {
+    console.log("Received GET request");
+    const assistantId = "asst_oaoORJy5U49dZrdwQvkYVbIb";
+    const { content } = ctx.request.query;
 
-  // 创建一个新的线程
-  const thread = await openai.beta.threads.create({
-    messages: [{ role: "user", content }]
-  });
-
-  // 在线程中创建并执行一个运行
-  const run = await openai.beta.threads.runs.create(
-    thread.id,
-    {
-      assistant_id: "asst_oaoORJy5U49dZrdwQvkYVbIb",
+    if (!content) {
+      ctx.status = 400; // 设置状态码为 400
+      ctx.body = '缺少消息内容'; // 设置响应体
+      return; // 退出函数
     }
-  );
 
-  console.log("run",run)
+    const thread = await openai.beta.threads.create();
 
-  const run1 = await openai.beta.threads.runs.retrieve(
-    thread.id,
-    run.id
-  );
+    await openai.beta.threads.messages.create(thread.id, {
+      role: 'user',
+      content: content, // 使用查询参数中的内容
+    });
 
-  const messages = await openai.beta.threads.messages.list(
-    thread.id
-  );
+    const run = await openai.beta.threads.runs.create(thread.id, {
+      assistant_id: assistantId,
+    });
 
-  // 将回复消息作为响应返回
-  ctx.body = messages.data;
+    let runStatus = run.status;
+    while (runStatus !== 'completed') {
+      const updatedRun = await openai.beta.threads.runs.retrieve(thread.id, run.id);
+      runStatus = updatedRun.status;
+      if (runStatus === 'completed') {
+        break;
+      }
+      // 适当等待一段时间后再次检查状态
+      await new Promise(resolve => setTimeout(resolve, 500)); 
+    }
+
+    const messages = await openai.beta.threads.messages.list(thread.id);
+    ctx.body = messages.data; // 将消息列表设置为响应体
+
+  } catch (error) {
+    ctx.status = 500; // 设置状态码为 500
+    ctx.body = `服务器错误: ${error.message}`; // 设置响应体
+  }
 });
 
 app.use(
