@@ -50,6 +50,17 @@ router.get("/getThreadId", async (ctx) => {
   }
 });
 
+router.get("/getThreadList", async (ctx) => {
+  try {
+    const {thread_id} = ctx.request.query;
+    const messages = await openai.beta.threads.messages.list(thread_id);
+    ctx.body = messages.data; // 将消息列表设置为响应体
+  } catch (error){
+    ctx.status = 500;
+    ctx.body = `获取消息列表式发生错误: ${error.message}`;
+  }
+});
+
 router.get("/assistant", async (ctx) => {
   try {
     console.log("Received GET request");
