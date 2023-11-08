@@ -36,20 +36,15 @@ router.get("/chat", async (ctx, next) => {
   ctx.body = res.choices;
 });
 
-router.post("/assistant", async (ctx) => {
+router.get("/assistant", async (ctx) => {
   console.log("Received POST request");
-  const { role, content } = ctx.request.body;
-  console.log("role", role);
+  const { content } = ctx.request.query;
   console.log("content", content);
-
-  // const prompt = "你能做什么？";
 
   // 创建一个新的线程
   const thread = await openai.beta.threads.create({
-    messages: [{ role, content }]
+    messages: [{ role: "user", content }]
   });
-
-  console.log("thread",thread)
 
   // 在线程中创建并执行一个运行
   const run = await openai.beta.threads.runs.create(
@@ -71,7 +66,7 @@ router.post("/assistant", async (ctx) => {
   );
 
   // 将回复消息作为响应返回
-  ctx.body = messages;
+  ctx.body = messages.data;
 });
 
 app.use(
